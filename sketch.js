@@ -36,7 +36,7 @@ function draw() {
       break;
     //Primer juego
     case 2:
-      
+
       break;
     //Segundo juego 
     case 3:
