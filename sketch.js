@@ -1,5 +1,6 @@
 let player;
 let objTest;
+let screensCounter  = 0;
 
 function preload() {
   background = loadImage("./assets/background.png");
@@ -15,17 +16,51 @@ function setup() {
   createCanvas(1277, 639);
   //imageMode(CORNER);
   player = new Player(0, 0, characterObject);
-  objTest = new Obj(50, 50, 40, 40);
+  objTest = new Obj(118, 100, 236, 54, 262, 76, 147, 131);
 }
 
 function draw() {
+  //console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
   image(background, 0, 0);
   
+  console.log(mouseY)
+
+  switch (screensCounter) { 
+    //Pantalla de inicio
+    case 0:
+
+      break;
+    //Instrucciones
+    case 1:
+
+      break;
+    //Primer juego
+    case 2:
+      
+      break;
+    //Segundo juego 
+    case 3:
+
+      break;
+    //Tercer juego
+    case 4:
+
+      break;
+    //Cuarto juego
+    case 5:
+
+      break;
+    //Quinto juego 
+    case 6:
+
+      break;
+  }
+
   player.draw();
   objTest.draw();
   
 
-	// test
+  // test
   if (player.hit(objTest)){
 	  fill(0,0,200);
 	  rect(200,200,100,100);

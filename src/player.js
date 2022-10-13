@@ -15,6 +15,8 @@ class Player {
 	draw (){
 		this.center = [this.x + this.width/2, this.y + this.height/2];
 		image(this.imageObject[this.state], this.x, this.y, this.width, this.height);
+		fill(255);
+		circle(this.center[0], this.center[1], 30)
 	}
 
 	move (input){
@@ -49,12 +51,17 @@ class Player {
 
 	}
 
-	hit (object){
-		if (dist(this.center[0], this.center[1], 
-				object.center[0], object.center[1]) < this.width) {
-			return true;
-		} else {
-			return false;
-		}
+	hit(object) {
+		let getPos = object.getPos();
+		//center > x1 y center > y1 y center < x2 y center < y3
+		//this.center > getPos[0] && this.center > getPos[1] && this.center < getPos[2] && this.center < getPos[4]
+		//console.log(this.center[0])
+
+
+		//0 = X esquina izquierda, 1 = y esquina izquierda, 2 = X esquina derecha, 3 = y esquina derecha
+		//4 = X esquina izquierda abajo, 5 = Y esquina izquierda abajo, 6 = X esquina derecha abajo, 7 = Y esquina derecha abajo
+		if (this.center[0] > getPos[0] && this.center[0] < getPos[2] && this.center[1] > getPos[3] && this.center[1] < getPos[7]) {
+			console.log("hit")
+		} 
 	}
 }
