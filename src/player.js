@@ -10,10 +10,10 @@ class Player {
 		this.prevState = 0;
 		this.speed = 20;
 
-		this.center = [this.x + this.width/2, this.y + this.height/2];
 	}
 
 	draw (){
+		this.center = [this.x + this.width/2, this.y + this.height/2];
 		image(this.imageObject[this.state], this.x, this.y, this.width, this.height);
 	}
 
