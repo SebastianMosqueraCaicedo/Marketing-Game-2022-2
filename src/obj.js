@@ -34,9 +34,8 @@ class Obj {
 	}
 
 	getPos() { 
-		//0 = X esquina izquierda, 1 = y esquina izquierda, 2 = X esquina derecha, 3 = y esquina derecha
-		//4 = X esquina izquierda abajo, 5 = Y esquina izquierda abajo, 6 = X esquina derecha abajo, 7 = Y esquina derecha abajo
 		let pos = [this.x1, this.y1, this.x2, this.y2, this.x3, this.y3, this.x4, this.y4];
 		return pos;
+		
 	}
 }
