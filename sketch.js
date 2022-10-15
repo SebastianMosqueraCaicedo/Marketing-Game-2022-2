@@ -3,6 +3,11 @@ let player;
 let complemetaryObjs
 let screensCounter = 0;
 
+//Variables del primer juego
+let phasesGameOne = -1;
+let objectPanaderia;
+let choosenColorGameOne = false;
+
 function preload() {
   mainMenu = loadImage("./assets/mainMenu.png");
   instruction = loadImage("./assets/instructions.png");
@@ -15,6 +20,11 @@ function preload() {
   managerObject = [loadImage("./assets/manager_right.png"), loadImage("./assets/manager_left.png"), loadImage("./assets/manager_back.png")];
   // Pos 0 = right, 1 = left, 2= back
   characterObject = [loadImage("./assets/woman_right.png"), loadImage("./assets/woman_left.png"), loadImage("./assets/woman_back.png")];
+
+      //Cosas del primer juego
+  locationIndicator = loadImage("./assets/location.png");
+  gameOneDialogues = [loadImage("./assets/game1-dialogue1.png"), loadImage("./assets/chooserGameOne.png")]
+  gameOneAssets = [loadImage("./assets/panaderia_rojo.png"), loadImage('./assets/panaderia_amarilla.png'), loadImage('./assets/panaderia_azul.png'), loadImage('./assets/preGameOne.png')]
 }
 
 function setup() {
@@ -31,9 +41,12 @@ function setup() {
   ]
  
 }
-
 function draw() {
-  console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+
+  //!!!!! console.log importantes.
+
+  //console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+  //console.log('x: ' + player.getX() + ' y: ' + player.getY());
   
  
   switch (screensCounter) {
@@ -43,46 +56,74 @@ function draw() {
       break;
     //Instrucciones
     case 1:
-    image(instruction, 0, 0)
+      image(instruction, 0, 0)
       break;
-    //Primer juego
+    //Primer juego - Poveda
     case 2:
+      image(background, 0, 0);
 
+      if ((player.getX() === 220 || player.getX() === 230) && player.getY() === 90 && phasesGameOne == 0) {
+        //console.log(player.getState());
+        
+        player.setState(2);
+        image(gameOneDialogues[0], 0, 0)
+      } else if (phasesGameOne == 0) {
+        image(locationIndicator, 0, 0);
+      }
+
+      if (phasesGameOne === 1) {
+        image(gameOneDialogues[1], 0, 0)
+      }
+
+      console.log(phasesGameOne)
+      
+      
+      
+      image(managerObject[1], 260, 80)
+
+      if (phasesGameOne < 0) {
+        image(gameOneAssets[3], 0, 0)
+      }
+      
       break;
-    //Segundo juego 
+    //Segundo juego - Sebastian
     case 3:
-
+      image(background, 0, 0);
+      
       break;
-    //Tercer juego
+    //Tercer juego - Poveda
     case 4:
 
       break;
-    //Cuarto juego
+    //Cuarto juego - Sebastian
     case 5:
 
       break;
-    //Quinto juego 
+    //Quinto juego - Poveda
     case 6:
 
       break;
   }
 
   
-
-  if (screensCounter > 1) { 
-    image(background, 0, 0);
+//Opciones para pintar las cosas que se mueven despues de las dos primeras pantallas.
+  if (screensCounter > 1 ) {
     player.draw();
     player.hit(complemetaryObjs[0]);
-    image(stantesObject, 0, 0);
-    image(secondCharObject, 0, 0);
-    //  objTest2.draw();
-    //objTest3.draw();
+  
     for (let i = 1; i < complemetaryObjs.length; i++) {
       player.hit2(complemetaryObjs[i]);
-      //complemetaryObjs[i].draw();
+    }
+
+    //Imagenes para darle tridimensionalidad
+    if ((phasesGameOne == 0 && screensCounter == 2) || screensCounter > 2) {
+      image(stantesObject, 0, 0);
+      image(secondCharObject, 0, 0);
     }
   }
- 
+
+  //Aqui queda el color def de la panaderia
+  colorDefPanaderia();
 }
 
 function mousePressed() {
@@ -102,7 +143,7 @@ function mousePressed() {
       break;
     //Instrucciones
     case 1:
-      if (mouseX > 550 && mouseX < 680 && mouseY > 303 && mouseY < 333) {
+      if (mouseX > 279 && mouseX < 414 && mouseY > 298 && mouseY < 333) {
         console.log("pasar")
         screensCounter = 2;
       }
@@ -110,6 +151,39 @@ function mousePressed() {
     //Primer juego
     case 2:
 
+      if (phasesGameOne < 0) { 
+        phasesGameOne = 0;
+      }
+      if (mouseX > 477 && mouseX < 525 && mouseY > 80 && mouseY < 127) {
+        phasesGameOne = 1;
+        console.log(phasesGameOne)
+      }
+
+      //Rojo
+      if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 111 && mouseY < 149) {
+        objectPanaderia = 0;
+        choosenColorGameOne = true;
+
+      }
+
+      //Amarillo
+      if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 176 && mouseY < 205) {
+        objectPanaderia = 1;
+        choosenColorGameOne = true;
+      }
+
+      //Azul
+      if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 236 && mouseY < 270) {
+        objectPanaderia = 2;
+        choosenColorGameOne = true;
+      }
+
+      //Siguiente
+      if (choosenColorGameOne == true && mouseX > 610 && mouseX < 644 && mouseY > 291 && mouseY < 332) { 
+        player.setX(20)
+        player.setY(30)
+        screensCounter = 3;
+      }
       break;
     //Segundo juego 
     case 3:
@@ -131,7 +205,8 @@ function mousePressed() {
 }
 
 function keyPressed() {
-// if (player.hit(objTest) === false) {
+
+  if (screensCounter > 1) { 
     switch (keyCode) {
       case 87:
         player.move(0);
@@ -149,6 +224,22 @@ function keyPressed() {
         player.move(3);
         break;
     }
+  }    
   //}
 		
+}
+
+//Funcion para dejar la panaderia durante todo el juego
+function colorDefPanaderia() { 
+  if (objectPanaderia === 0) {
+    image(gameOneAssets[0], 0, 0);
+  }
+
+  if (objectPanaderia === 1) {
+    image(gameOneAssets[1], 0, 0);
+  }
+
+  if (objectPanaderia === 2) {
+    image(gameOneAssets[2], 0, 0);
+  }
 }
