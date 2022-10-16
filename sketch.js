@@ -245,24 +245,24 @@ function mousePressed() {
       //Rojo
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 111 && mouseY < 149) {
         objectPanaderia = 0;
-        choosenColorGameOne = true;
+        choosenColorGameOne = 'Rojo';
 
       }
 
       //Amarillo
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 176 && mouseY < 205) {
         objectPanaderia = 1;
-        choosenColorGameOne = true;
+        choosenColorGameOne = 'Amarillo';
       }
 
       //Azul
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 236 && mouseY < 270) {
         objectPanaderia = 2;
-        choosenColorGameOne = true;
+        choosenColorGameOne = 'Azul';
       }
 
       //Siguiente
-      if (choosenColorGameOne == true && mouseX > 610 && mouseX < 644 && mouseY > 291 && mouseY < 332) { 
+      if (choosenColorGameOne != false && mouseX > 610 && mouseX < 644 && mouseY > 291 && mouseY < 332) { 
         player.setX(20)
         player.setY(30)
         screensCounter = 3;
