@@ -10,6 +10,7 @@ class Player {
 		this.prevState = 0;
 		this.speed = 10;
 
+		this.heldObject = false;
 	}
 
 	draw() {
@@ -85,6 +86,19 @@ class Player {
 		} else {
 			return false;
 		}
+	}
+
+	isNear(object, distance){
+		if (dist(this.center[0], this.center[1], object.x, object.y) < distance){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	holdItem(object){
+		object.x = this.x + 20;
+		object.y = this.y + 10;
 	}
 
 	getX() { 
