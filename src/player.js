@@ -97,14 +97,8 @@ class Player {
 	}
 
 	holdItem(object){
-		if(!this.heldObject){
-			this.heldObject = true;
-		}
-
-		if(this.heldObject){
-			object.x = this.x + 20;
-			object.y = this.y + 10;
-		}
+		object.x = this.x + 20;
+		object.y = this.y + 10;
 	}
 
 	getX() { 
