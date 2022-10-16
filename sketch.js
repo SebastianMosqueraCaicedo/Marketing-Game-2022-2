@@ -1,8 +1,9 @@
 
 let player;
 let complemetaryObjs
-let screensCounter = 0;
+let screensCounter = 3;
 let playerLock = false;
+let transitioning = true;
 
 //Variables del primer juego
 let phasesGameOne = -1;
@@ -11,7 +12,7 @@ let choosenColorGameOne = false;
 
 // Segundo juego
 let smallBeer;
-let gameTwoStart = false;
+let phasesGameTwo = -1;
 
 	// Donde se pueden colocar las cervezas
 let beerZones = [
@@ -49,6 +50,7 @@ function preload() {
 
       // Cosas del segundo juego
   gameTwoDialogue = loadImage("./assets/game2-location1.png");
+  preGameTwo = loadImage("./assets/preGameTwo.png");
   beerSmall = loadImage("./assets/beerSmall.png");
 }
 
@@ -117,7 +119,10 @@ function draw() {
       image(background2, 0, 0);
       image(managerObject[1], 240, 220);
 
-      if (!gameTwoStart) {
+      if (phasesGameTwo === -1) {
+	      image(preGameTwo, 0, 0);
+      }
+      if (phasesGameTwo === 0) {
 	image(locationIndicator2, 180, 220);
         if ((player.getX() === 180) && player.getY() === 220) {
 	  playerLock = true;
@@ -127,10 +132,11 @@ function draw() {
 	  image(smallBeer.img, smallBeer.x, smallBeer.y);
         }
 
-      } else {
-	  image(smallBeer.img, smallBeer.x, smallBeer.y);
-	  player.holdItem(smallBeer);
+      } 
 
+      if (phasesGameTwo === 1){
+        image(smallBeer.img, smallBeer.x, smallBeer.y);
+        player.holdItem(smallBeer);
       }
       
       break;
@@ -148,7 +154,9 @@ function draw() {
       break;
   }
 
-  
+	// Si la pantalla no esta transicionando, constantemente pinta esto:
+ if (!transitioning){ 
+
 //Opciones para pintar las cosas que se mueven despues de las dos primeras pantallas.
   if (screensCounter > 1 ) {
     player.draw();
@@ -182,13 +190,15 @@ function draw() {
       }
     }
 
-    if (screensCounter === 3 && gameTwoStart){
+    if (screensCounter === 3 && phasesGameTwo === 1){
         image(pointer1, beerZones[j].x - 15, beerZones[j].y - 30);
         if (player.isNear(beerZones[j], 65)){  
           image(pointer2, beerZones[j].x - 30, beerZones[j].y - 55);
         }
     }
   }
+
+ }
 }
 
 function mousePressed() {
@@ -251,22 +261,32 @@ function mousePressed() {
         player.setX(20)
         player.setY(30)
         screensCounter = 3;
+	transitioning = true;
       }
       break;
     //Segundo juego 
     case 3:
 
-      if (!gameTwoStart && playerLock) {
-	      if(dist(mouseX, mouseY, 625, 265) < 15) {
-		      gameTwoStart = true;
-		      playerLock = false;
-	      }
+      // Pantalla de inicio
+      if (phasesGameTwo === -1 && dist(mouseX, mouseY, 350, 300) < 30){
+        phasesGameTwo = 0;
+        transitioning = false;
+      }
+      
+      // Yendo al manager
+      if (phasesGameTwo === 0 && playerLock){
+	if(dist(mouseX, mouseY, 625, 265) < 15){
+          phasesGameTwo = 1;
+          playerLock = false;
+	}
+      } 
 
-      } else {
+      // Colocando cervezas
+      if (phasesGameTwo === 1){
 	for (let j = 0; j < beerZones.length; j++){
 	  if (player.isNear(beerZones[j], 65)){  
 	    beerZones[j].chosen = true;
-	    gameTwoStart = false;
+	    phasesGameTwo = -1;
 	    screensCounter = 4;
 	  }
 	}
@@ -290,6 +310,7 @@ function mousePressed() {
 
 function keyPressed() {
 
+	// Si el juego inicia y el jugador no esta paralizado, muevelo
   if (screensCounter > 1 && !playerLock) { 
     switch (keyCode) {
       case 87:
