@@ -1,7 +1,7 @@
 
 let player;
 let complemetaryObjs
-let screensCounter = 3;
+let screensCounter = 0;
 let playerLock = false;
 
 //Variables del primer juego
@@ -11,15 +11,14 @@ let choosenColorGameOne = false;
 
 // Segundo juego
 let smallBeer;
-let isBeerPlaced = false;
 let gameTwoStart = false;
 
 	// Donde se pueden colocar las cervezas
 let beerZones = [
-	{x: 200, y: 340},
-	{x: 410, y: 140},
-	{x: 800, y: 295},
-	{x: 1015, y: 195}
+	{x: 115, y: 180, chosen: false},
+	{x: 230, y: 75, chosen: false},
+	{x: 425, y: 160, chosen: false},
+	{x: 545, y: 110, chosen: false}
 ];
 
 function preload() {
@@ -57,6 +56,7 @@ function setup() {
   createCanvas(1277, 639);
   //imageMode(CORNER);
   player = new Player(20, 30, characterObject);
+  smallBeer = {x: 200, y: 200, img: beerSmall};
   
   complemetaryObjs = [
    new Obj(118, 100, 236, 54, 262, 76, 147, 131),
@@ -71,7 +71,7 @@ function draw() {
 
   //!!!!! console.log importantes.
 
-  console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+  //console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
   //console.log('x: ' + player.getX() + ' y: ' + player.getY());
   
  
@@ -124,9 +124,12 @@ function draw() {
 	  player.setState(0);
 	  image(nextButton, 560, 250);
 	  image(gameTwoDialogue, 0, 300);
+	  image(smallBeer.img, smallBeer.x, smallBeer.y);
         }
 
       } else {
+	  image(smallBeer.img, smallBeer.x, smallBeer.y);
+	  player.holdItem(smallBeer);
 
       }
       
@@ -159,17 +162,39 @@ function draw() {
     if ((phasesGameOne == 0 && screensCounter == 2) || screensCounter > 2) {
       image(stantesObject, 0, 0);
       if (screensCounter === 2 || screensCounter === 4) {
-	      // No utilizaré este fantasma
+	      // No se utiliza en niveles 2 o 4
       	image(secondCharObject, 0, 0);
       }
+
     }
   }
 
   //Aqui queda el color def de la panaderia
   colorDefPanaderia();
+
+  // Aqui las flechas y desicion final de las cervezas
+  for (let j = 0; j < beerZones.length; j++) {
+    if(beerZones[j].chosen){
+      if(j < 2) {
+        image(beerSmall, beerZones[j].x - 15, beerZones[j].y - 35);
+      } else {
+        image(beerObject, beerZones[j].x - 35, beerZones[j].y - 42);
+      }
+    }
+
+    if (screensCounter === 3 && gameTwoStart){
+        image(pointer1, beerZones[j].x - 15, beerZones[j].y - 30);
+        if (player.isNear(beerZones[j], 65)){  
+          image(pointer2, beerZones[j].x - 30, beerZones[j].y - 55);
+        }
+    }
+  }
 }
 
 function mousePressed() {
+
+  console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+
   switch (screensCounter) {
     //Pantalla de inicio
     case 0:
@@ -238,7 +263,13 @@ function mousePressed() {
 	      }
 
       } else {
-
+	for (let j = 0; j < beerZones.length; j++){
+	  if (player.isNear(beerZones[j], 65)){  
+	    beerZones[j].chosen = true;
+	    gameTwoStart = false;
+	    screensCounter = 4;
+	  }
+	}
       }
 
       break;
