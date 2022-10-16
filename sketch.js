@@ -1,7 +1,7 @@
 
 let player;
 let complemetaryObjs
-let screensCounter = 5;
+let screensCounter = 2;
 
 let playerLock = false;
 let transitioning = true;
@@ -237,31 +237,19 @@ if (holdTime < 3 || holdTime > 60 * 2) {
   //Aqui queda el color def de la panaderia
   colorDefPanaderia();
 
-  // Aqui las flechas y desicion final de las cervezas
-  for (let j = 0; j < beerZones.length; j++) {
-    if(beerZones[j].chosen){
-      if(j < 2) {
-        image(beerSmall, beerZones[j].x - 15, beerZones[j].y - 35);
-      } else {
-        image(beerObject, beerZones[j].x - 35, beerZones[j].y - 42);
+  // Aqui las flechas de las cervezas
+  if (screensCounter === 3 && phasesGameTwo === 1) {
+    for (let j = 0; j < beerZones.length; j++) {
+      image(pointer1, beerZones[j].x - 15, beerZones[j].y - 30);
+      if (player.isNear(beerZones[j], 65)){  
+        image(pointer2, beerZones[j].x - 30, beerZones[j].y - 55);
       }
-    }
-
-    if (screensCounter === 3 && phasesGameTwo === 1){
-        image(pointer1, beerZones[j].x - 15, beerZones[j].y - 30);
-        if (player.isNear(beerZones[j], 65)){  
-          image(pointer2, beerZones[j].x - 30, beerZones[j].y - 55);
-        }
     }
   }
 
   // Aqui las flechas y desicion final de los chicles
-  for (let j = 0; j < chicZones.length; j++) {
-    if(chicZones[j].chosen){
-        image(chicleBig, chicZones[j].x - 15, chicZones[j].y - 12);
-    }
-
-    if (screensCounter === 5 && phasesGameFou === 1){
+  if (screensCounter === 5 && phasesGameFou === 1){
+    for (let j = 0; j < chicZones.length; j++) {
         image(pointer1, chicZones[j].x - 15, chicZones[j].y - 30);
         if (player.isNear(chicZones[j], 65)){  
           image(pointer2, chicZones[j].x - 30, chicZones[j].y - 55);
