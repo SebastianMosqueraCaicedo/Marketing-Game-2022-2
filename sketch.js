@@ -1,14 +1,28 @@
 
 let player;
 let complemetaryObjs
-let screensCounter = 0;
+let screensCounter = 3;
 
 //Variables del primer juego
 let phasesGameOne = -1;
 let objectPanaderia;
 let choosenColorGameOne = false;
 
+// Segundo juego
+let smallBeer;
+let isBeerPlaced = false;
+let gameTwoStart = false;
+
+	// Donde se pueden colocar las cervezas
+let beerZones = [
+	{x: 200, y: 340},
+	{x: 410, y: 140},
+	{x: 800, y: 295},
+	{x: 1015, y: 195}
+];
+
 function preload() {
+  // Cosas globales
   mainMenu = loadImage("./assets/mainMenu.png");
   instruction = loadImage("./assets/instructions.png");
   background = loadImage("./assets/background.png");
@@ -16,6 +30,12 @@ function preload() {
   meatObject = loadImage("./assets/meat.png");
   stantesObject = loadImage("./assets/stantes.png");
   secondCharObject = loadImage("./assets/characters.png");
+
+  nextButton = loadImage("./assets/nextButton.png");
+  pointer1 = loadImage("./assets/pointer1.png");
+  pointer2 = loadImage("./assets/pointer2.png");
+  background2 = loadImage("./assets/background2.png");
+
   // Pos 0 = right, 1 = left, 2= back
   managerObject = [loadImage("./assets/manager_right.png"), loadImage("./assets/manager_left.png"), loadImage("./assets/manager_back.png")];
   // Pos 0 = right, 1 = left, 2= back
@@ -25,6 +45,10 @@ function preload() {
   locationIndicator = loadImage("./assets/location.png");
   gameOneDialogues = [loadImage("./assets/game1-dialogue1.png"), loadImage("./assets/chooserGameOne.png")]
   gameOneAssets = [loadImage("./assets/panaderia_rojo.png"), loadImage('./assets/panaderia_amarilla.png'), loadImage('./assets/panaderia_azul.png'), loadImage('./assets/preGameOne.png')]
+
+      // Cosas del segundo juego
+  gameTwoDialogues = [loadImage("./assets/game2-dialogue1.png"), loadImage("./assets/game2-location1.png")];
+  beerSmall = loadImage("./assets/beerSmall.png");
 }
 
 function setup() {
@@ -88,7 +112,13 @@ function draw() {
       break;
     //Segundo juego - Sebastian
     case 3:
-      image(background, 0, 0);
+      image(background2, 0, 0);
+
+      if (!gameTwoStart) {
+
+      } else {
+
+      }
       
       break;
     //Tercer juego - Poveda
