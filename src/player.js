@@ -87,6 +87,14 @@ class Player {
 		}
 	}
 
+	isNear(object, distance){
+		if (dist(this.center[0], this.center[1], object.x, object.y) < distance){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	getX() { 
 		return this.x
 	}
