@@ -304,6 +304,33 @@ function mousePressed() {
       break;
     //Cuarto juego
     case 5:
+      // Pantalla de inicio
+      if (phasesGameFou === -1 && dist(mouseX, mouseY, 350, 300) < 30){
+        phasesGameFou = 0;
+        transitioning = false;
+      }
+      
+      // Yendo al manager
+      if (phasesGameFou === 0 && playerLock){
+	if(dist(mouseX, mouseY, 625, 265) < 15){
+          phasesGameFou = 1;
+          playerLock = false;
+	}
+      } 
+
+      // Colocando cervezas
+      if (phasesGameFou === 1){
+	      /*
+	for (let j = 0; j < beerZones.length; j++){
+	  if (player.isNear(beerZones[j], 65)){  
+	    beerZones[j].chosen = true;
+	    phasesGameTwo = -1;
+	    screensCounter = 4;
+
+	  }
+	}
+	*/
+      }
 
       break;
     //Quinto juego 
