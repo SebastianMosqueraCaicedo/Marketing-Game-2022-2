@@ -70,6 +70,11 @@ function setup() {
  
 }
 function draw() {
+  // Checkea que el jugador no se salga
+  if(player.x < 0) { player.x += player.speed * 2 }
+  if(player.x > 640) { player.x -= player.speed * 2 }
+  if(player.y < 0) { player.y += player.speed * 2 }
+  if(player.y > 300) { player.y -= player.speed * 2 }
 
   //!!!!! console.log importantes.
 
