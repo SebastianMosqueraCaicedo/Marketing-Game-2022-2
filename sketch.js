@@ -1,9 +1,11 @@
 
 let player;
 let complemetaryObjs
-let screensCounter = 3;
+let screensCounter = 5;
+
 let playerLock = false;
 let transitioning = true;
+let holdTime = 0;
 
 //Variables del primer juego
 let phasesGameOne = -1;
@@ -22,6 +24,18 @@ let beerZones = [
 	{x: 545, y: 110, chosen: false}
 ];
 
+// Segundo juego
+let chicle;
+let phasesGameFou = -1;
+
+	// Donde se pueden colocar las cervezas
+let chicZones = [
+	{x: 115, y: 180, chosen: false},
+	{x: 515, y: 200, chosen: false},
+	{x: 650, y: 155, chosen: false},
+	{x: 495, y: 80, chosen: false}
+];
+
 function preload() {
   // Cosas globales
   mainMenu = loadImage("./assets/mainMenu.png");
@@ -36,6 +50,7 @@ function preload() {
   pointer1 = loadImage("./assets/pointer1.png");
   pointer2 = loadImage("./assets/pointer2.png");
   background2 = loadImage("./assets/background2.png");
+  background4 = loadImage("./assets/background4.png");
   locationIndicator2 = loadImage("./assets/location2.png");
 
   // Pos 0 = right, 1 = left, 2= back
@@ -52,13 +67,22 @@ function preload() {
   gameTwoDialogue = loadImage("./assets/game2-location1.png");
   preGameTwo = loadImage("./assets/preGameTwo.png");
   beerSmall = loadImage("./assets/beerSmall.png");
+
+
+      // Cosas del cuarto juego
+  gameFouDialogue = loadImage("./assets/game4-location1.png");
+  preGameFou = loadImage("./assets/preGameFou.png");
+  chicleSmall = loadImage("./assets/chicle.png");
+  chicleBig = loadImage("./assets/chicleBig.png");
 }
 
 function setup() {
   createCanvas(1277, 639);
   //imageMode(CORNER);
   player = new Player(20, 30, characterObject);
+
   smallBeer = {x: 200, y: 200, img: beerSmall};
+  chicle = {x: 230, y: 220, img: chicleSmall};
   
   complemetaryObjs = [
    new Obj(118, 100, 236, 54, 262, 76, 147, 131),
@@ -70,6 +94,12 @@ function setup() {
  
 }
 function draw() {
+
+holdTime++;
+
+	// Para que el usuario no inmediatamente clickee
+if (holdTime < 3 || holdTime > 60 * 2) {
+
   // Checkea que el jugador no se salga
   if(player.x < 0) { player.x += player.speed * 2 }
   if(player.x > 640) { player.x -= player.speed * 2 }
@@ -151,6 +181,28 @@ function draw() {
       break;
     //Cuarto juego - Sebastian
     case 5:
+      image(background4, 0, 0);
+      image(managerObject[0], 200, 220);
+
+      if (phasesGameFou === -1) {
+	      image(preGameFou, 0, 0);
+      }
+      if (phasesGameFou === 0) {
+	image(locationIndicator2, 250, 220);
+        if ((player.getX() === 250) && player.getY() === 220) {
+	  playerLock = true;
+	  player.setState(1);
+	  image(nextButton, 560, 250);
+	  image(gameFouDialogue, 0, 300);
+	  image(chicle.img, chicle.x, chicle.y);
+        }
+
+      } 
+
+      if (phasesGameFou === 1){
+        image(chicle.img, chicle.x, chicle.y);
+	player.holdItem(chicle);
+      }
 
       break;
     //Quinto juego - Poveda
@@ -203,7 +255,21 @@ function draw() {
     }
   }
 
+  // Aqui las flechas y desicion final de los chicles
+  for (let j = 0; j < chicZones.length; j++) {
+    if(chicZones[j].chosen){
+        image(chicleBig, chicZones[j].x - 15, chicZones[j].y - 12);
+    }
+
+    if (screensCounter === 5 && phasesGameFou === 1){
+        image(pointer1, chicZones[j].x - 15, chicZones[j].y - 30);
+        if (player.isNear(chicZones[j], 65)){  
+          image(pointer2, chicZones[j].x - 30, chicZones[j].y - 55);
+        }
+    }
+  }
  }
+}
 }
 
 function mousePressed() {
@@ -234,8 +300,9 @@ function mousePressed() {
     //Primer juego
     case 2:
 
-      if (phasesGameOne < 0) { 
+      if (phasesGameOne < 0 && dist(mouseX, mouseY, 350, 300) < 30){ 
         phasesGameOne = 0;
+	transitioning = false;
       }
       if (mouseX > 477 && mouseX < 525 && mouseY > 80 && mouseY < 127) {
         phasesGameOne = 1;
@@ -245,20 +312,20 @@ function mousePressed() {
       //Rojo
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 111 && mouseY < 149) {
         objectPanaderia = 0;
-        choosenColorGameOne = 'Rojo';
+        choosenColorGameOne = true;
 
       }
 
       //Amarillo
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 176 && mouseY < 205) {
         objectPanaderia = 1;
-        choosenColorGameOne = 'Amarillo';
+        choosenColorGameOne = true;
       }
 
       //Azul
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 236 && mouseY < 270) {
         objectPanaderia = 2;
-        choosenColorGameOne = 'Azul';
+        choosenColorGameOne = true;
       }
 
       //Siguiente
@@ -266,7 +333,9 @@ function mousePressed() {
         player.setX(20)
         player.setY(30)
         screensCounter = 3;
+
 	transitioning = true;
+	holdUp();
       }
       break;
     //Segundo juego 
@@ -293,6 +362,7 @@ function mousePressed() {
 	    beerZones[j].chosen = true;
 	    phasesGameTwo = -1;
 	    screensCounter = 4;
+            transitioning = true;
 	  }
 	}
       }
@@ -318,18 +388,18 @@ function mousePressed() {
 	}
       } 
 
-      // Colocando cervezas
+      // Colocando chicles
       if (phasesGameFou === 1){
-	      /*
-	for (let j = 0; j < beerZones.length; j++){
-	  if (player.isNear(beerZones[j], 65)){  
-	    beerZones[j].chosen = true;
-	    phasesGameTwo = -1;
-	    screensCounter = 4;
+	for (let j = 0; j < chicZones.length; j++){
+	  if (player.isNear(chicZones[j], 65)){  
+	    chicZones[j].chosen = true;
+	    holdUp();
+	    phasesGameFou = -1;
+	    screensCounter = 6;
+            transitioning = true;
 
 	  }
 	}
-	*/
       }
 
       break;
@@ -379,3 +449,9 @@ function colorDefPanaderia() {
     image(gameOneAssets[2], 0, 0);
   }
 }
+
+// Funcion para forzar a draw() que espere un momento
+function holdUp() {
+	holdTime = 0;
+}
+
