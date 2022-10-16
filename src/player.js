@@ -10,6 +10,7 @@ class Player {
 		this.prevState = 0;
 		this.speed = 10;
 
+		this.heldObject = false;
 	}
 
 	draw() {
@@ -92,6 +93,17 @@ class Player {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	holdItem(object){
+		if(!this.heldObject){
+			this.heldObject = true;
+		}
+
+		if(this.heldObject){
+			object.x = this.x + 20;
+			object.y = this.y + 10;
 		}
 	}
 
