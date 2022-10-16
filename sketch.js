@@ -2,6 +2,7 @@
 let player;
 let complemetaryObjs
 let screensCounter = 3;
+let playerLock = false;
 
 //Variables del primer juego
 let phasesGameOne = -1;
@@ -35,6 +36,7 @@ function preload() {
   pointer1 = loadImage("./assets/pointer1.png");
   pointer2 = loadImage("./assets/pointer2.png");
   background2 = loadImage("./assets/background2.png");
+  locationIndicator2 = loadImage("./assets/location2.png");
 
   // Pos 0 = right, 1 = left, 2= back
   managerObject = [loadImage("./assets/manager_right.png"), loadImage("./assets/manager_left.png"), loadImage("./assets/manager_back.png")];
@@ -47,7 +49,7 @@ function preload() {
   gameOneAssets = [loadImage("./assets/panaderia_rojo.png"), loadImage('./assets/panaderia_amarilla.png'), loadImage('./assets/panaderia_azul.png'), loadImage('./assets/preGameOne.png')]
 
       // Cosas del segundo juego
-  gameTwoDialogues = [loadImage("./assets/game2-dialogue1.png"), loadImage("./assets/game2-location1.png")];
+  gameTwoDialogue = loadImage("./assets/game2-location1.png");
   beerSmall = loadImage("./assets/beerSmall.png");
 }
 
@@ -62,14 +64,14 @@ function setup() {
     new Obj(357, 194, 490, 260, 463, 304, 355, 246),
     new Obj(323, 122, 439, 176, 436, 202, 319, 150),
     new Obj(439, 176, 552, 230, 551, 260, 430, 201)
-  ]
+  ];
  
 }
 function draw() {
 
   //!!!!! console.log importantes.
 
-  //console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+  console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
   //console.log('x: ' + player.getX() + ' y: ' + player.getY());
   
  
@@ -113,8 +115,16 @@ function draw() {
     //Segundo juego - Sebastian
     case 3:
       image(background2, 0, 0);
+      image(managerObject[1], 240, 220);
 
       if (!gameTwoStart) {
+	image(locationIndicator2, 180, 220);
+        if ((player.getX() === 180) && player.getY() === 220) {
+	  playerLock = true;
+	  player.setState(0);
+	  image(nextButton, 560, 250);
+	  image(gameTwoDialogue, 0, 300);
+        }
 
       } else {
 
@@ -148,7 +158,10 @@ function draw() {
     //Imagenes para darle tridimensionalidad
     if ((phasesGameOne == 0 && screensCounter == 2) || screensCounter > 2) {
       image(stantesObject, 0, 0);
-      image(secondCharObject, 0, 0);
+      if (screensCounter === 2 || screensCounter === 4) {
+	      // No utilizaré este fantasma
+      	image(secondCharObject, 0, 0);
+      }
     }
   }
 
@@ -218,6 +231,16 @@ function mousePressed() {
     //Segundo juego 
     case 3:
 
+      if (!gameTwoStart && playerLock) {
+	      if(dist(mouseX, mouseY, 625, 265) < 15) {
+		      gameTwoStart = true;
+		      playerLock = false;
+	      }
+
+      } else {
+
+      }
+
       break;
     //Tercer juego
     case 4:
@@ -236,7 +259,7 @@ function mousePressed() {
 
 function keyPressed() {
 
-  if (screensCounter > 1) { 
+  if (screensCounter > 1 && !playerLock) { 
     switch (keyCode) {
       case 87:
         player.move(0);
@@ -255,7 +278,6 @@ function keyPressed() {
         break;
     }
   }    
-  //}
 		
 }
 
