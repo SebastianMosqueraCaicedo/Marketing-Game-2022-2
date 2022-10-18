@@ -1,6 +1,6 @@
 let player;
 let complemetaryObjs
-let screensCounter = 0;
+let screensCounter = 6;
 
 let playerLock = false;
 let transitioning = true;
@@ -44,6 +44,15 @@ let gameFiveCases = false;
 let rangeOneX = 303;
 let rangeOneY = 140;
 let rangeOneOn = false;
+let rangeTwoX = 303;
+let rangeTwoY = 215;
+let rangeTwoOn = false;
+let backgroundCounter = 0;
+let secondScreenFive = false;
+let backgroundOneDecision = 0;
+let secondAct = false;
+let backgroundTwoDecOne = 0;
+let backgroundTwoDecTwo = 0;
 
 
 // Donde se pueden colocar las cervezas
@@ -93,7 +102,7 @@ function preload() {
   //Cosas del 5 juego
 
   instructionsGame5 = [loadImage("./assets/instructionsGame5_1.png"), loadImage("./assets/instructionsGame5_2.png"), loadImage("./assets/nivel5background.png")];
-
+  backgroundsGame5 = [loadImage("./assets/nivel5background2.png"), loadImage("./assets/nivel5background3.png")]
 
   // Cosas del cuarto juego
   gameFouDialogue = loadImage("./assets/game4-location1.png");
@@ -275,19 +284,23 @@ function draw() {
       case 6:
         image(instructionsGame5[instructionsOrderFive], 0, 0)
         
+        let rangeOneValue = "";
+        let rangeTwoValue = "";
 
-        if (gameFiveCases === true) { 
+        if (gameFiveCases === true) {
 
           fill(35, 89, 155)
           circle(rangeOneX, rangeOneY, 10)
+          circle(rangeTwoX, rangeTwoY, 10)
 
 
           if (rangeOneOn === true) {
             rangeOneX = mouseX;
           }
 
-          if (rangeOneX > 434 && rangeOneOn === true) {
-            rangeOneX = 430;
+          //Limitex primera
+          if (rangeOneX > 438 && rangeOneOn === true) {
+            rangeOneX = 438;
             rangeOneOn = !rangeOneOn;
           }
 
@@ -296,13 +309,166 @@ function draw() {
             rangeOneOn = !rangeOneOn;
           }
 
-          if (rangeOneX > 303 && rangeOneX < 324) { 
-
-          } 
-
+          //Limites segunda
+          
+          if (rangeTwoOn === true) {
+            rangeTwoX = mouseX;
           }
 
+          if (rangeTwoX > 438 && rangeTwoOn === true) {
+            rangeTwoX = 438;
+            rangeTwoOn = !rangeTwoOn;
+          }
+
+          if (rangeTwoX < 303 && rangeTwoOn === true) {
+            rangeTwoX = 303;
+            rangeTwoOn = !rangeTwoOn;
+          }
+          //Primea
+          //1
+          if (rangeOneX > 303 && rangeOneX < 324) {
+            rangeOneValue = "0-10 años"
+          }
+
+          //2
+          if (rangeOneX > 324 && rangeOneX < 344) {
+            rangeOneValue = "10-15 años"
+          }
+
+          //3
+          if (rangeOneX > 344 && rangeOneX < 364) {
+            rangeOneValue = "15-20 años"
+          }
+
+          //4
+          if (rangeOneX > 364 && rangeOneX < 384) {
+            rangeOneValue = "20-25 años"
+          }
+
+          //5
+          if (rangeOneX > 384 && rangeOneX < 404) {
+            rangeOneValue = "25-30 años"
+          }
+
+          //6
+          if (rangeOneX > 404 && rangeOneX < 424) {
+            rangeOneValue = "35-40 años"
+          }
         
+          //7
+          if (rangeOneX > 424 && rangeOneX < 444) {
+            rangeOneValue = "40-45 años"
+          }
+
+
+          //Limites segunda
+
+          if (rangeTwoOn === true) {
+            rangeTwoX = mouseX;
+          }
+
+          if (rangeTwoX > 438 && rangeTwoOn === true) {
+            rangeTwoX = 438;
+            rangeTwoOn = !rangeTwoOn;
+          }
+
+          if (rangeTwoX < 303 && rangeTwoOn === true) {
+            rangeTwoX = 303;
+            rangeTwoOn = !rangeTwoOn;
+          }
+          //Primea
+          //1
+          if (rangeTwoX > 303 && rangeTwoX < 324) {
+            rangeTwoValue = "1 km"
+          }
+
+          //2
+          if (rangeTwoX > 324 && rangeTwoX < 344) {
+            rangeTwoValue = "2 km"
+          }
+
+          //3
+          if (rangeTwoX > 344 && rangeTwoX < 364) {
+            rangeTwoValue = "3 km"
+          }
+
+          //4
+          if (rangeTwoX > 364 && rangeTwoX < 384) {
+            rangeTwoValue = "4 km"
+          }
+
+          //5
+          if (rangeTwoX > 384 && rangeTwoX < 404) {
+            rangeTwoValue = "5 km"
+          }
+
+          //6
+          if (rangeTwoX > 404 && rangeTwoX < 424) {
+            rangeTwoValue = "10 km"
+          }
+
+          //7
+          if (rangeTwoX > 424 && rangeTwoX < 444) {
+            rangeTwoValue = "20 km"
+          }
+
+          fill(255)
+          textSize(14)
+          text(rangeOneValue, 349, 160)
+          text(rangeTwoValue, 349, 235)
+        }
+
+        if (secondScreenFive === true) {
+          image(backgroundsGame5[backgroundCounter], 0, 0)
+        }
+
+        //segunda pantalla
+        if (backgroundCounter === 0) { 
+          if (backgroundTwoDecOne === 1) {
+            fill(35, 89, 155, 40);
+            rect(312, 106, 100, 22);
+          }
+
+          if (backgroundTwoDecOne === 2) {
+            fill(35, 89, 155, 40);
+            rect(312, 131, 100, 22);
+          }
+
+
+          if (backgroundTwoDecOne === 3) {
+            fill(35, 89, 155, 40);
+            rect(312, 155, 100, 22);
+          }
+
+          if (backgroundTwoDecTwo === 1) {
+            fill(35, 89, 155, 40);
+            rect(312, 214, 100, 22);
+          }
+
+          if (backgroundTwoDecTwo === 2) {
+            fill(35, 89, 155, 40);
+            rect(312, 238, 100, 22);
+          }   
+
+        }
+       
+
+        //Tercera pantalla
+        if (backgroundOneDecision === 1) { 
+          fill(35, 89, 155, 40);
+          rect(277, 125, 190, 31);
+        }
+
+        if (backgroundOneDecision === 2) {
+          fill(35, 89, 155, 40);
+          rect(277, 181, 190, 31);
+        }
+
+        if (backgroundOneDecision === 3) {
+          fill(35, 89, 155, 40);
+          rect(277, 230, 190, 31);
+        }
+       
      
         console.log(mouseX)
 
@@ -580,10 +746,72 @@ function mousePressed() {
         gameFiveCases = true;
       }
 
-      if (dist(mouseX, mouseY, rangeOneX, rangeOneY) < 10) { 
+      if (dist(mouseX, mouseY, rangeOneX, rangeOneY) < 10) {
         rangeOneOn = !rangeOneOn;
       }
 
+      if (dist(mouseX, mouseY, rangeTwoX, rangeTwoY) < 10) {
+        rangeTwoOn = !rangeTwoOn;
+        console.log('undido')
+      }
+
+      if (mouseX > 488 && mouseX < 616 && mouseY > 160 && mouseY < 180) {
+        secondScreenFive = true;
+      }
+
+      // Decisiones del primer background
+
+
+      if (mouseX > 312 && mouseX < 412 && mouseY > 106 && mouseY < 124 && backgroundCounter === 0 && secondScreenFive === true) {
+        backgroundTwoDecOne = 1;
+        secondAct = true;
+      }
+
+
+      if (mouseX > 312 && mouseX < 412 && mouseY > 131 && mouseY < 150 && backgroundCounter === 0 && secondScreenFive === true) {
+        backgroundTwoDecOne = 2;
+        secondAct = true;
+      }
+
+
+      if (mouseX > 312 && mouseX < 412 && mouseY > 155 && mouseY < 177 && backgroundCounter === 0 && secondScreenFive === true) {
+        backgroundTwoDecOne = 3;
+        secondAct = true;
+      }
+
+      if (mouseX > 312 && mouseX < 412 && mouseY > 214 && mouseY < 236 && backgroundCounter === 0 && secondScreenFive === true) {
+        backgroundTwoDecTwo = 1;
+        secondAct = true;
+      }
+
+      if (mouseX > 312 && mouseX < 412 && mouseY > 238 && mouseY < 260 && backgroundCounter === 0 && secondScreenFive === true) {
+        backgroundTwoDecTwo = 2;
+        secondAct = true;
+      }
+
+      if (mouseX > 488 && mouseX < 616 && mouseY > 160 && mouseY < 180 && backgroundCounter === 0 && secondAct == true) {
+        backgroundCounter = 1;
+      }
+      
+      
+      if (secondAct == true && secondScreenFive == true && backgroundCounter === 1) { 
+
+        // Primera
+        if (mouseX > 278 && mouseX < 464 && mouseY > 124 && mouseY < 158) { 
+          backgroundOneDecision = 1;
+        }
+
+        if (mouseX > 278 && mouseX < 464 && mouseY > 180 && mouseY < 214) {
+          backgroundOneDecision = 2;
+        }
+
+        if (mouseX > 278 && mouseX < 464 && mouseY > 229 && mouseY < 264) {
+          backgroundOneDecision = 3;
+        }
+
+       
+
+      }
       break;
   }
 }
