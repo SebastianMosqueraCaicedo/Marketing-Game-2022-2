@@ -1,15 +1,17 @@
 let player;
 let complemetaryObjs
-let screensCounter = 6;
+let screensCounter = 0;
 
 let playerLock = false;
 let transitioning = true;
 let holdTime = 0;
 
+
 //Variables del primer juego
 let phasesGameOne = -1;
 let objectPanaderia;
 let choosenColorGameOne = false;
+
 
 // Segundo juego
 let smallBeer;
@@ -23,18 +25,28 @@ let beerZones = [
   { x: 545, y: 110, chosen: false }
 ];
 
-// Segundo juego
-let chicle;
-let phasesGameFou = -1;
 
 //tercer juego
 
 let instructionsOrder = 0;
-let gameFourCases = false;
+let gameThreeCases = false;
 let valueMix = 0;
 let valueBBQ = 0;
 let valueNatural = 0;
-let finishedGameFour = false;
+let finishedGameThree = false;
+
+
+// Cuarto juego
+let chicle;
+let phasesGameFou = -1;
+
+// Donde se pueden colocar los chicles
+let chicZones = [
+  { x: 115, y: 180, chosen: false },
+  { x: 515, y: 200, chosen: false },
+  { x: 650, y: 155, chosen: false },
+  { x: 495, y: 80, chosen: false }
+];
 
 
 //quinto juego
@@ -53,15 +65,6 @@ let backgroundOneDecision = 0;
 let secondAct = false;
 let backgroundTwoDecOne = 0;
 let backgroundTwoDecTwo = 0;
-
-
-// Donde se pueden colocar las cervezas
-let chicZones = [
-  { x: 115, y: 180, chosen: false },
-  { x: 515, y: 200, chosen: false },
-  { x: 650, y: 155, chosen: false },
-  { x: 495, y: 80, chosen: false }
-];
 
 function preload() {
   // Cosas globales
@@ -223,7 +226,7 @@ function draw() {
 
 
 
-        if (gameFourCases == true) {
+        if (gameThreeCases == true) {
           if (valueMix < 100 || valueBBQ < 100 || valueNatural < 100) {
             fill(255, 0, 0);
           } else { fill(0); }
@@ -246,7 +249,7 @@ function draw() {
 
         if (valueRestante === 0) {
           image(nextImageGameFour, 0, 0);
-          finishedGameFour = true
+          finishedGameThree = true
         }
         break;
 
@@ -622,16 +625,16 @@ function mousePressed() {
       break;
     //Tercer juego
     case 4:
-      if (instructionsOrder < 2 && gameFourCases == false) {
+      if (instructionsOrder < 2 && gameThreeCases == false) {
         instructionsOrder = instructionsOrder + 1;
 
       }
 
       if (instructionsOrder == 2) {
-        gameFourCases = true;
+        gameThreeCases = true;
       }
 
-      if (gameFourCases === true) {
+      if (gameThreeCases === true) {
 
         //Mix
         if (valueMix < 450 && valueMix >= 0) {
@@ -696,7 +699,7 @@ function mousePressed() {
 
         }
 
-        if (finishedGameFour === true && mouseX > 233 && mouseX < 466 && mouseY > 89 && mouseY < 116) {
+        if (finishedGameThree === true && mouseX > 233 && mouseX < 466 && mouseY > 89 && mouseY < 116) {
           screensCounter = 5;
         }
       }
