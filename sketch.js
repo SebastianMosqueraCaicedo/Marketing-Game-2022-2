@@ -2,6 +2,8 @@ let player;
 let complemetaryObjs;
 let hitBoxes = [];
 let screensCounter = 0;
+// notas en porcentajes de 20 para cada nivel
+let grades = [0, 0, 0, 0, 0]
 
 let playerLock = false;
 let transitioning = true;
@@ -577,6 +579,7 @@ function mousePressed() {
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 111 && mouseY < 149) {
         objectPanaderia = 0;
         choosenColorGameOne = true;
+	grades[0] = 20;
 
       }
 
@@ -584,12 +587,14 @@ function mousePressed() {
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 176 && mouseY < 205) {
         objectPanaderia = 1;
         choosenColorGameOne = true;
+	grades[0] = 0;
       }
 
       //Azul
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 236 && mouseY < 270) {
         objectPanaderia = 2;
         choosenColorGameOne = true;
+	grades[0] = 0;
       }
 
       //Siguiente
@@ -629,6 +634,11 @@ function mousePressed() {
             transitioning = true;
           }
         }
+	if (beerZones[2].chosen) {
+		grades[1] = 20;
+	} else {
+		grades[1] = 0;
+	}
       }
 
       break;
@@ -707,6 +717,11 @@ function mousePressed() {
           }
 
         }
+	      if(valueMix >= 400 && (valueNatural > valueBBQ)) {
+		      grades[2] = 20;
+	      } else {
+		      grades[2] = 0;
+	      }
 
         if (finishedGameThree === true && mouseX > 233 && mouseX < 466 && mouseY > 89 && mouseY < 116) {
           screensCounter = 5;
@@ -744,6 +759,11 @@ function mousePressed() {
 
           }
         }
+	if (chicZones[0].chosen) {
+		grades[3] = 20;
+	} else {
+		grades[3] = 0;
+	}
       }
 
       break;
