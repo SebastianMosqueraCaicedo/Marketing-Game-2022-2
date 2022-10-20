@@ -8,7 +8,6 @@ let transitioning = true;
 let holdTime = 0;
 let playerHit = false
 
-let valorRespuestas = [0, 0, 0, 0, 0];
 
 //Variables del primer juego
 let phasesGameOne = -1;
@@ -349,11 +348,7 @@ function draw() {
           //3
           if (rangeOneX > 344 && rangeOneX < 364) {
             rangeOneValue = "15-20 años"
-	    if (valorRespuestas[4] === 0) {
-		    valorRespuestas[4] += 4;
-          } else if (valorRespuestas[4] === 4) {
-		  valorRespuestas[4] -=4;
-	  }
+          }
 
           //4
           if (rangeOneX > 364 && rangeOneX < 384) {
@@ -416,15 +411,6 @@ function draw() {
           if (rangeTwoX > 384 && rangeTwoX < 404) {
             rangeTwoValue = "5 km"
           }
-
-	  // Aumenta aumenta
-	  if (rangeTwoX > 304 && rangeTwoX < 404) {
-	    if (valorRespuestas[4] < 8) {
-	      valorRespuestas[4] += 4;
-	    } else if (valorRespuestas[4] > 3) {
-	      valorRespuestas[4] -= 4;
-	    }
-	  }
 
           //6
           if (rangeTwoX > 404 && rangeTwoX < 424) {
@@ -591,7 +577,6 @@ function mousePressed() {
       if (phasesGameOne == 1 && mouseX > 553 && mouseX < 644 && mouseY > 111 && mouseY < 149) {
         objectPanaderia = 0;
         choosenColorGameOne = true;
-	valorRespuestas[0] = 20;
 
       }
 
@@ -639,9 +624,6 @@ function mousePressed() {
         for (let j = 0; j < beerZones.length; j++) {
           if (player.isNear(beerZones[j], 65)) {
             beerZones[j].chosen = true;
-	    if (j = 2 ){
-	      valorRespuestas[1] = 20;
-	    }
             phasesGameTwo = -1;
             screensCounter = 4;
             transitioning = true;
@@ -725,9 +707,6 @@ function mousePressed() {
           }
 
         }
-	if(valueMix === 450 && (valueNatural > valueBBQ)) {
-	  valorRespuestas[2] = 20;
-	}
 
         if (finishedGameThree === true && mouseX > 233 && mouseX < 466 && mouseY > 89 && mouseY < 116) {
           screensCounter = 5;
@@ -758,9 +737,6 @@ function mousePressed() {
         for (let j = 0; j < chicZones.length; j++) {
           if (player.isNear(chicZones[j], 65)) {
             chicZones[j].chosen = true;
-	    if (j = 0){
-	      valorRespuestas[3] = 20;
-	    }
             holdUp();
             phasesGameFou = -1;
             screensCounter = 6;
