@@ -16,8 +16,6 @@ class Player {
 	draw() {
 		this.center = [this.x + (this.width / 2), this.y + (this.height / 2)];
 		image(this.imageObject[this.state], this.x, this.y, this.width, this.height);
-		fill(255,0,0);
-		ellipse(this.center[0], this.center[1], this.width);
 	}
 
 	move(input) {
