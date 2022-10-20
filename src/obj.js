@@ -18,7 +18,7 @@ class Obj {
 
 		this.image = image;
 
-		this.center = function() {
+		this.center = () => {
 			let centerPos = [];
 			
 			// Agrega la mitad del tamaño de la segunda coordenada a la primera
@@ -79,8 +79,6 @@ class Obj {
 		} else {
 			fill(0);
 			quad(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3, this.x4, this.y4);
-			fill(255)
-			circle(this.center[0], this.center[1], 50)
 		}
 	}
 

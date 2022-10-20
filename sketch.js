@@ -1,15 +1,19 @@
 let player;
-let complemetaryObjs
-let screensCounter = 6;
+let complemetaryObjs;
+let hitBoxes = [];
+let screensCounter = 0;
 
 let playerLock = false;
 let transitioning = true;
 let holdTime = 0;
+let playerHit = false
+
 
 //Variables del primer juego
 let phasesGameOne = -1;
 let objectPanaderia;
 let choosenColorGameOne = false;
+
 
 // Segundo juego
 let smallBeer;
@@ -23,18 +27,28 @@ let beerZones = [
   { x: 545, y: 110, chosen: false }
 ];
 
-// Segundo juego
-let chicle;
-let phasesGameFou = -1;
 
 //tercer juego
 
 let instructionsOrder = 0;
-let gameFourCases = false;
+let gameThreeCases = false;
 let valueMix = 0;
 let valueBBQ = 0;
 let valueNatural = 0;
-let finishedGameFour = false;
+let finishedGameThree = false;
+
+
+// Cuarto juego
+let chicle;
+let phasesGameFou = -1;
+
+// Donde se pueden colocar los chicles
+let chicZones = [
+  { x: 115, y: 180, chosen: false },
+  { x: 515, y: 200, chosen: false },
+  { x: 650, y: 155, chosen: false },
+  { x: 495, y: 80, chosen: false }
+];
 
 
 //quinto juego
@@ -54,14 +68,6 @@ let secondAct = false;
 let backgroundTwoDecOne = 0;
 let backgroundTwoDecTwo = 0;
 
-
-// Donde se pueden colocar las cervezas
-let chicZones = [
-  { x: 115, y: 180, chosen: false },
-  { x: 515, y: 200, chosen: false },
-  { x: 650, y: 155, chosen: false },
-  { x: 495, y: 80, chosen: false }
-];
 
 function preload() {
   // Cosas globales
@@ -122,12 +128,16 @@ function setup() {
   chicle = { x: 230, y: 220, img: chicleSmall };
 
   complemetaryObjs = [
-    new Obj(118, 100, 236, 54, 262, 76, 147, 131),
-    new Obj(234, 140, 357, 194, 357, 247, 233, 193),
-    new Obj(357, 194, 490, 260, 463, 304, 355, 246),
-    new Obj(323, 122, 439, 176, 436, 202, 319, 150),
-    new Obj(439, 176, 552, 230, 551, 260, 430, 201)
+    new Obj(55, 220, 110, 195, 125, 205, 65, 235),
+    new Obj(155, 120, 235, 75, 245, 80, 160, 125),
+    new Obj(270, 185, 470, 280, 465, 290, 255, 190),
+    new Obj(380, 135, 580, 225, 560, 235, 370, 140),
+    new Obj(470, 85, 675, 175, 665, 185, 465, 90)
   ];
+
+  for (let i = 0; i < complemetaryObjs.length; i++) {
+	  hitBoxes.push(new Hitbox (complemetaryObjs[i]));
+  }
 
 }
 function draw() {
@@ -175,7 +185,7 @@ function draw() {
           image(gameOneDialogues[1], 0, 0)
         }
 
-        console.log(phasesGameOne)
+        // console.log(phasesGameOne)
 
 
 
@@ -223,7 +233,7 @@ function draw() {
 
 
 
-        if (gameFourCases == true) {
+        if (gameThreeCases == true) {
           if (valueMix < 100 || valueBBQ < 100 || valueNatural < 100) {
             fill(255, 0, 0);
           } else { fill(0); }
@@ -246,7 +256,7 @@ function draw() {
 
         if (valueRestante === 0) {
           image(nextImageGameFour, 0, 0);
-          finishedGameFour = true
+          finishedGameThree = true
         }
         break;
 
@@ -470,7 +480,7 @@ function draw() {
         }
        
      
-        console.log(mouseX)
+        // console.log(mouseX)
 
         break;
     }
@@ -481,10 +491,12 @@ function draw() {
       //Opciones para pintar las cosas que se mueven despues de las dos primeras pantallas.
       if (screensCounter > 1) {
         player.draw();
-        player.hit(complemetaryObjs[0]);
 
-        for (let i = 1; i < complemetaryObjs.length; i++) {
-          player.hit2(complemetaryObjs[i]);
+	playerHit = false;
+        for (let b = 0; b < hitBoxes.length; b++) {
+	  if (hitBoxes[b].hit(player)) {
+	    playerHit = true;
+	  } 
         }
 
         //Imagenes para darle tridimensionalidad
@@ -622,16 +634,16 @@ function mousePressed() {
       break;
     //Tercer juego
     case 4:
-      if (instructionsOrder < 2 && gameFourCases == false) {
+      if (instructionsOrder < 2 && gameThreeCases == false) {
         instructionsOrder = instructionsOrder + 1;
 
       }
 
       if (instructionsOrder == 2) {
-        gameFourCases = true;
+        gameThreeCases = true;
       }
 
-      if (gameFourCases === true) {
+      if (gameThreeCases === true) {
 
         //Mix
         if (valueMix < 450 && valueMix >= 0) {
@@ -696,7 +708,7 @@ function mousePressed() {
 
         }
 
-        if (finishedGameFour === true && mouseX > 233 && mouseX < 466 && mouseY > 89 && mouseY < 116) {
+        if (finishedGameThree === true && mouseX > 233 && mouseX < 466 && mouseY > 89 && mouseY < 116) {
           screensCounter = 5;
         }
       }
@@ -823,18 +835,39 @@ function keyPressed() {
     switch (keyCode) {
       case 87:
         player.move(0);
+	if (playerHit){
+	  player.move(1);
+	  player.move(1);
+	  player.move(1);
+	}
         break;
 
       case 83:
         player.move(1);
+	if (playerHit){
+	  player.move(0);
+	  player.move(0);
+	  player.move(0);
+	}
         break;
 
       case 65:
+	    console.log(playerHit);
         player.move(2);
+	if (playerHit){
+	  player.move(3);
+	  player.move(3);
+	  player.move(3);
+	}
         break;
 
       case 68:
         player.move(3);
+	if (playerHit){
+	  player.move(2);
+	  player.move(2);
+	  player.move(2);
+	}
         break;
     }
   }
