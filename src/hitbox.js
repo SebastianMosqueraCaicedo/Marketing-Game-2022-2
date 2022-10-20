@@ -2,7 +2,7 @@ class Hitbox {
 
 	constructor(items) {
 		this.items = items;
-		this.radius = 5;
+		this.radius = 10;
 		this.balls = [];
 		this.body();
 	}
@@ -89,8 +89,19 @@ class Hitbox {
 	}
 
 	hit(player) {
+		let hit = false;
 		for (let i = 0; i < this.balls.length; i++) {
-
+			let xRound = this.balls[i].x;
+			let yRound = this.balls[i].y;
+			if(dist(xRound, yRound, 
+				player.center[0], player.center[1]) < (player.width / 2)){
+				hit = true;
+			} 
+		}
+		if (hit) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -100,9 +111,9 @@ class Hitbox {
 			this.items.x4 + this.items.y1 + this.items.y2 +
 			this.items.y3 + this.items.y4;
 		if (this.items.x5 === undefined && (sum != undefined || sum != null)){
-			return true
+			return true;
 		} else {
-			return false
+			return false;
 		}
 	}
 
