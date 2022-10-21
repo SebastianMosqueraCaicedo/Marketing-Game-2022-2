@@ -1,9 +1,11 @@
+
 let player;
 let complemetaryObjs;
 let hitBoxes = [];
-let screensCounter = 0;
+let screensCounter = 6;
 // notas en porcentajes de 20 para cada nivel
 let grades = [0, 0, 0, 0, 0]
+let gradesFive = [0, 0, 0, 0, 0]
 
 let playerLock = false;
 let transitioning = true;
@@ -70,6 +72,12 @@ let secondAct = false;
 let backgroundTwoDecOne = 0;
 let backgroundTwoDecTwo = 0;
 
+let finalScoreScreensCounter = 0;
+let scoreOneAct = false;
+let scoreTwoAct = false;
+let scoreThreeAct = false;
+let scoreForthAct = false;
+let scoreFifthAct = false;
 
 function preload() {
   // Cosas globales
@@ -118,11 +126,17 @@ function preload() {
   chicleSmall = loadImage("./assets/chicle.png");
   chicleBig = loadImage("./assets/chicleBig.png");
 
-
+  finalScoreScreens = [loadImage("./assets/nivelUno_Answer.png"), "", loadImage("./assets/nivelTwo_Answer.png"), "", loadImage("./assets/nivelThree_Answer.png"), "", loadImage("./assets/nivelFour_Answer.png"), "", loadImage("./assets/nivelFive_Answer.png"), "", loadImage("./assets/nivelFinal_Answer.png")]
+  levelOneAnswers = [loadImage("./assets/nivelUno_AnswerCorrect.png"), loadImage("./assets/nivelUno_AnswerWrong.png")]
+  levelTwoAnswers = [loadImage("./assets/nivelTwo_AnswerCorrect.png"), loadImage("./assets/nivelTwo_AnswerWrong.png")]
+  levelThreeAnswers = [loadImage("./assets/nivelThree_AnswerCorrect.png"), loadImage("./assets/nivelThree_AnswerWrong.png")]
+  levelFourAnswers = [loadImage("./assets/nivelFour_AnswerCorrect.png"), loadImage("./assets/nivelFour_AnswerWrong.png")]
+  levelFiveAnswers = [loadImage("./assets/nivelFive_AnswerCorrect.png"), loadImage("./assets/nivelFive_AnswerWrong.png")]
+  fondoAzul = loadImage("./assets/nivelFondo_Answer.png")
 }
 
 function setup() {
-  createCanvas(1277, 639);
+  createCanvas(700, 350);
   //imageMode(CORNER);
   player = new Player(20, 30, characterObject);
 
@@ -142,8 +156,12 @@ function setup() {
   }
 
 }
-function draw() {
 
+
+function draw() {
+  console.log(finalScoreScreensCounter)
+  grades[4] = gradesFive[0] + gradesFive[1] + gradesFive[2] + gradesFive[3] + gradesFive[4];
+let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
   holdTime++;
 
   // Para que el usuario no inmediatamente clickee
@@ -294,6 +312,7 @@ function draw() {
         break;
       //Quinto juego - Poveda
       case 6:
+
         image(instructionsGame5[instructionsOrderFive], 0, 0)
         
         let rangeOneValue = "";
@@ -435,7 +454,7 @@ function draw() {
         }
 
         //segunda pantalla
-        if (backgroundCounter === 0) { 
+        if (backgroundCounter === 0) {
           if (backgroundTwoDecOne === 1) {
             fill(35, 89, 155, 40);
             rect(312, 106, 100, 22);
@@ -450,23 +469,32 @@ function draw() {
           if (backgroundTwoDecOne === 3) {
             fill(35, 89, 155, 40);
             rect(312, 155, 100, 22);
+            gradesFive[2] = 4;
           }
 
           if (backgroundTwoDecTwo === 1) {
             fill(35, 89, 155, 40);
             rect(312, 214, 100, 22);
+            gradesFive[3] = 4;
           }
 
           if (backgroundTwoDecTwo === 2) {
             fill(35, 89, 155, 40);
             rect(312, 238, 100, 22);
-          }   
+          }
 
         }
        
+        //Resultados 
+        if (rangeOneValue == "20-25 años" && backgroundCounter === 1) {
+          gradesFive[0] = 4;
+        }
 
+        if (rangeTwoValue == "5 km" && backgroundCounter === 1) {
+          gradesFive[1] = 4;
+        }
         //Tercera pantalla
-        if (backgroundOneDecision === 1) { 
+        if (backgroundOneDecision === 1) {
           fill(35, 89, 155, 40);
           rect(277, 125, 190, 31);
         }
@@ -479,13 +507,68 @@ function draw() {
         if (backgroundOneDecision === 3) {
           fill(35, 89, 155, 40);
           rect(277, 230, 190, 31);
+          gradesFive[4] = 4;
         }
-       
-     
+           
         // console.log(mouseX)
-
         break;
+      
+      case 7:
+        //Background
+        image(finalScoreScreens[finalScoreScreensCounter], 0, 0)
+        
+        
+        if (grades[0] === 20) {
+          finalScoreScreens[1] = levelOneAnswers[0];
+        } else if (grades[0] !== 20) {
+          finalScoreScreens[1] = levelOneAnswers[1];
+        }
+
+        if (grades[1] === 20) {
+          finalScoreScreens[3] = levelTwoAnswers[0];
+        } else if (grades[1] !== 20) {
+          finalScoreScreens[3] = levelTwoAnswers[1];
+        }
+
+        if (grades[2] === 20) {
+          finalScoreScreens[5] = levelThreeAnswers[0];
+        } else if (grades[2] !== 20) {
+          finalScoreScreens[5] = levelThreeAnswers[1];
+        }
+
+        if (grades[3] === 20) {
+          finalScoreScreens[7] = levelFourAnswers[0];
+        } else if (grades[3] !== 20) {
+          finalScoreScreens[7] = levelFourAnswers[1];
+        }
+
+        if (grades[4] === 20 & finalScoreScreensCounter !=10) {
+          finalScoreScreens[9] = levelFiveAnswers[0];
+        } else if (grades[4] !== 20 & finalScoreScreensCounter != 10) {
+          finalScoreScreens[9] = levelFiveAnswers[1];
+        }
+
+    
+        if (finalScoreScreensCounter === 10) {
+          textSize(70);
+          image(finalScoreScreens[10], 0, 0)
+          
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          text(finalScore + " %", width / 2 - 50, height / 2)
+          
+        
+        }
+
+      break;
     }
+
+  
 
     // Si la pantalla no esta transicionando, constantemente pinta esto:
     if (!transitioning) {
@@ -535,24 +618,21 @@ function draw() {
       }
     }
   }
-
 }
 
 function mousePressed() {
 
-  console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+
 
   switch (screensCounter) {
     //Pantalla de inicio
     case 0:
       //Continuar 
       if (mouseX > 282 && mouseX < 417 && mouseY > 233 && mouseY < 266) {
-        console.log("pasar")
         screensCounter = 2;
       }
 
       if (mouseX > 282 && mouseX < 417 && mouseY > 281 && mouseY < 313) {
-        console.log("instrucciones")
         screensCounter = 1;
       }
       break;
@@ -835,15 +915,23 @@ function mousePressed() {
 
         if (mouseX > 278 && mouseX < 464 && mouseY > 180 && mouseY < 214) {
           backgroundOneDecision = 2;
+          
         }
 
         if (mouseX > 278 && mouseX < 464 && mouseY > 229 && mouseY < 264) {
           backgroundOneDecision = 3;
         }
 
-       
+        if (mouseX > 488 && mouseX < 616 && mouseY > 160 && mouseY < 180 && backgroundOneDecision != 0) {
+          screensCounter = 7;
+        }
 
       }
+      break;
+    case 7:
+      finalScoreScreensCounter += 1;
+      
+      
       break;
   }
 }
@@ -872,7 +960,6 @@ function keyPressed() {
         break;
 
       case 65:
-	    console.log(playerHit);
         player.move(2);
 	if (playerHit){
 	  player.move(3);
