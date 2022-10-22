@@ -14,7 +14,6 @@ class Player {
 	}
 
 	draw() {
-		this.checkBoundaries();
 		this.center = [this.x + (this.width / 2), this.y + (this.height / 2)];
 		image(this.imageObject[this.state], this.x, this.y, this.width, this.height);
 	}
@@ -63,18 +62,6 @@ class Player {
 	holdItem(object){
 		object.x = this.x + 20;
 		object.y = this.y + 10;
-	}
-
-	checkBoundaries() {
-		if (this.x > (windowWidth - this.width)){
-			this.x -= this.speed;
-		} else if (this.x < this.width / 2){
-			this.x += this.speed;
-		} else if (this.y > (windowHeight - this.height * 1.5)){
-			this.y -= this.speed;
-		} else if (this.y < this.heigth){
-			this.y += this.speed;
-		}
 	}
 
 	getX() { 
