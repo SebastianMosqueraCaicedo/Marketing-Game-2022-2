@@ -1,7 +1,6 @@
 
 let player;
 let complemetaryObjs;
-let hitBoxes = [];
 let screensCounter = 6;
 // notas en porcentajes de 20 para cada nivel
 let grades = [0, 0, 0, 0, 0]
@@ -150,10 +149,6 @@ function setup() {
     new Obj(380, 135, 580, 225, 560, 235, 370, 140),
     new Obj(470, 85, 675, 175, 665, 185, 465, 90)
   ];
-
-  for (let i = 0; i < complemetaryObjs.length; i++) {
-	  hitBoxes.push(new Hitbox (complemetaryObjs[i]));
-  }
 
 }
 
@@ -578,11 +573,6 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
         player.draw();
 
 	playerHit = false;
-        for (let b = 0; b < hitBoxes.length; b++) {
-	  if (hitBoxes[b].hit(player)) {
-	    playerHit = true;
-	  } 
-        }
 
         //Imagenes para darle tridimensionalidad
         if ((phasesGameOne == 0 && screensCounter == 2) || screensCounter > 2) {
@@ -943,38 +933,18 @@ function keyPressed() {
     switch (keyCode) {
       case 87:
         player.move(0);
-	if (playerHit){
-	  player.move(1);
-	  player.move(1);
-	  player.move(1);
-	}
         break;
 
       case 83:
         player.move(1);
-	if (playerHit){
-	  player.move(0);
-	  player.move(0);
-	  player.move(0);
-	}
         break;
 
       case 65:
         player.move(2);
-	if (playerHit){
-	  player.move(3);
-	  player.move(3);
-	  player.move(3);
-	}
         break;
 
       case 68:
         player.move(3);
-	if (playerHit){
-	  player.move(2);
-	  player.move(2);
-	  player.move(2);
-	}
         break;
     }
   }

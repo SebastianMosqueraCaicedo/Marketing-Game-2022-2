@@ -8,7 +8,6 @@ class Player {
 		this.imageObject = imageObject;  // receives frame array
 		this.state = 0;  // Current frame
 		this.prevState = 0;
-		this.speed = 10;
 
 		this.heldObject = false;
 	}
@@ -22,12 +21,10 @@ class Player {
 		// 0: up, 1: down, 2: left, 3: right
 		switch (input) {
 			case 0:
-				this.y -= this.speed;
 				this.state = 2;
 				break;
 
 			case 1:
-				this.y += this.speed;
 				if (this.prevState === 1) {
 					this.state = 1;
 				} else {
@@ -36,13 +33,11 @@ class Player {
 				break;
 
 			case 2:
-				this.x -= this.speed;
 				this.state = 1;
 				this.prevState = 1;
 				break;
 
 			case 3:
-				this.x += this.speed;
 				this.state = 0;
 				this.prevState = 0;
 				break;
