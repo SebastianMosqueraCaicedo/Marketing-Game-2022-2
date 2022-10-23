@@ -12,6 +12,8 @@ class Tilemap {
 			{xPos: 2, yPos: 13},
 			{xPos: 3, yPos: 12},
 			{xPos: 4, yPos: 11},
+			{xPos: 3, yPos: 14},
+			{xPos: 4, yPos: 13},
 			{xPos: 9, yPos: 10},
 			{xPos: 10, yPos: 11},
 			{xPos: 11, yPos: 12},

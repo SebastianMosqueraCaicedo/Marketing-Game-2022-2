@@ -87,7 +87,6 @@ function preload() {
   beerObject = loadImage("./assets/beer.png");
   meatObject = loadImage("./assets/meat.png");
   stantesObject = loadImage("./assets/stantes.png");
-  secondCharObject = loadImage("./assets/characters.png");
 
   nextButton = loadImage("./assets/nextButton.png");
   pointer1 = loadImage("./assets/pointer1.png");
@@ -96,6 +95,8 @@ function preload() {
   background4 = loadImage("./assets/background4.png");
   locationIndicator2 = loadImage("./assets/location2.png");
 
+  cajaName = loadImage("./assets/cajaName.png");
+  cajaCandy = loadImage("./assets/cajaCandy.png");
   bindings = loadImage("./assets/binds.png");
 
   // Pos 0 = right, 1 = left, 2= back
@@ -227,10 +228,7 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
         let valueRestante = 100 - (valueMix * 0.1) - (valueBBQ * 0.1) - (valueNatural * 0.1);
         let valueGastado = valueMix + valueBBQ + valueNatural;
 
-
         image(instructionsGame3[instructionsOrder], 0, 0);
-
-
 
         if (gameThreeCases == true) {
           if (valueMix < 100 || valueBBQ < 100 || valueNatural < 100) {
@@ -527,7 +525,6 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
           finalScoreScreens[9] = levelFiveAnswers[1];
         }
 
-    
         if (finalScoreScreensCounter === 10) {
           textSize(70);
           image(finalScoreScreens[10], 0, 0)
@@ -541,31 +538,32 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
           text(finalScore + " %", width / 2 - 50, height / 2)
           text(finalScore + " %", width / 2 - 50, height / 2)
           
-        
         }
 
       break;
     }
 
-  
 
     // Si la pantalla no esta transicionando, constantemente pinta esto:
     if (!transitioning) {
 
       //Opciones para pintar las cosas que se mueven despues de las dos primeras pantallas.
       if (screensCounter > 1) {
-        player.draw(tileMap);
+	if (screensCounter === 2){
+	  image(cajaCandy, 63, 205);
+          player.draw(tileMap);
+	  image(cajaName, 30, 105);
+	} else {
+	  image(cajaCandy, 68, 203);
+          player.draw(tileMap);
+	  image(cajaName, 35, 104);
+	}
 
 	playerHit = false;
 
         //Imagenes para darle tridimensionalidad
         if ((phasesGameOne == 0 && screensCounter == 2) || screensCounter > 2) {
           image(stantesObject, 0, 0);
-          if (screensCounter === 2 || screensCounter === 4) {
-            // No se utiliza en niveles 2 o 4
-            image(secondCharObject, 0, 0);
-          }
-
         }
       }
 
@@ -574,7 +572,7 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
       // Aqui las flechas de las cervezas
       if (screensCounter === 3 && phasesGameTwo === 1) {
         for (let j = 0; j < beerZones.length; j++) {
-          image(pointer1, beerZones[j].x - 15, beerZones[j].y - 30);
+          image(pointer1, beerZones[j].x - 30, beerZones[j].y - 35);
           if (player.isNear(beerZones[j], 55)) {
             image(pointer2, beerZones[j].x - 30, beerZones[j].y - 55);
           }
@@ -584,7 +582,7 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
       // Aqui las flechas y desicion final de los chicles
       if (screensCounter === 5 && phasesGameFou === 1) {
         for (let j = 0; j < chicZones.length; j++) {
-          image(pointer1, chicZones[j].x - 15, chicZones[j].y - 30);
+          image(pointer1, chicZones[j].x - 30, chicZones[j].y - 35);
           if (player.isNear(chicZones[j], 55)) {
             image(pointer2, chicZones[j].x - 30, chicZones[j].y - 55);
           }
@@ -601,9 +599,6 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
 }
 
 function mousePressed() {
-
-
-
   switch (screensCounter) {
     //Pantalla de inicio
     case 0:
@@ -785,8 +780,6 @@ function mousePressed() {
           screensCounter = 5;
         }
       }
-
-
 
       break;
     //Cuarto juego
