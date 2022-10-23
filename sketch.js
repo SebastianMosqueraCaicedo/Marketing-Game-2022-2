@@ -2,6 +2,7 @@ let tileMap;
 let player;
 let complemetaryObjs;
 let screensCounter = 0;
+let bindCounter = 0;
 // notas en porcentajes de 20 para cada nivel
 let grades = [0, 0, 0, 0, 0]
 let gradesFive = [0, 0, 0, 0, 0]
@@ -95,6 +96,8 @@ function preload() {
   background4 = loadImage("./assets/background4.png");
   locationIndicator2 = loadImage("./assets/location2.png");
 
+  bindings = loadImage("./assets/binds.png");
+
   // Pos 0 = right, 1 = left, 2= back
   managerObject = [loadImage("./assets/manager_right.png"), loadImage("./assets/manager_left.png"), loadImage("./assets/manager_back.png")];
   // Pos 0 = right, 1 = left, 2= back
@@ -169,15 +172,16 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
       case 2:
         image(background, 0, 0);
 
-        if (player.currPos[0] === 8 && player.currPos[1] === 5
-	  || player.currPos[0] === 9 && player.currPos[1] === 6
-	  && phasesGameOne === 0) {
+	if (phasesGameOne === 0){
+		if (player.currPos[0] === 8 && player.currPos[1] === 5
+		  || player.currPos[0] === 9 && player.currPos[1] === 6){
 
-          player.setState(2);
-          image(gameOneDialogues[0], 0, 0)
-        } else if (phasesGameOne === 0) {
-          image(locationIndicator, 0, 0);
-        }
+		  player.setState(2);
+		  image(gameOneDialogues[0], 0, 0)
+		} else {
+		  image(locationIndicator, 0, 0);
+		}
+	}
 
         if (phasesGameOne === 1) {
           image(gameOneDialogues[1], 0, 0)
@@ -586,6 +590,12 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
           }
         }
       }
+	if (phasesGameOne === 0){
+		if(bindCounter < 250){
+			bindCounter++;
+			image(bindings, 0, 0);
+		}
+	}
     }
   }
 }
