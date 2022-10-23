@@ -21,8 +21,6 @@ class Tilemap {
 			{xPos: 15, yPos: 16},
 			{xPos: 16, yPos: 17},
 			{xPos: 12, yPos: 7},
-			{xPos: 12, yPos: 5},
-			{xPos: 12, yPos: 7},
 			{xPos: 13, yPos: 6},
 			{xPos: 13, yPos: 8},
 			{xPos: 14, yPos: 7},
@@ -53,10 +51,11 @@ class Tilemap {
 			{xPos: 22, yPos: 7},
 			{xPos: 22, yPos: 9},
 			{xPos: 23, yPos: 8},
-			{xPos: 23, yPos: 10},
+			{xPos: 23, yPos: 10}
 		];
 		this.hei = 13.8;
 		this.wid = 29;
+		this.gap = 56;
 		this.genCells();
 	}
 	draw() {
@@ -68,9 +67,10 @@ class Tilemap {
 				text(this.cellArray[f][g].xPos +", "+
 					this.cellArray[f][g].yPos,
 					(this.cellArray[f][g].xPos * this.wid), 
-					(this.cellArray[f][g].yPos * this.hei) + 56);
-				//point((this.cellArray[f][g].xPos * this.wid), 
-				//	(this.cellArray[f][g].yPos * this.hei) + 56);
+					(this.cellArray[f][g].yPos * this.hei) + this.gap);
+				strokeWeight(2);
+				point((this.cellArray[f][g].xPos * this.wid), 
+					(this.cellArray[f][g].yPos * this.hei) + this.gap);
 			}
 		}
 	}
