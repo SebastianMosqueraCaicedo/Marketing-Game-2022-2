@@ -73,7 +73,6 @@ class Player {
 				this.prevState = 0;
 				break;
 		}
-		console.log(this.currPos);
 	}
 
 
@@ -98,19 +97,11 @@ class Player {
 		return this.y
 	}
 
-	getCurrPos() {
-		return this.currPos;
-	}
-
 	setX(x) { 
 		this.x = x;
 	}
 	setY(y) { 
 		this.y = y;
-	}
-
-	setCurrPos(x, y) {
-		this.currPos = [x, y];
 	}
 
 	getState() { 

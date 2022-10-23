@@ -1,7 +1,7 @@
-
+let tileMap;
 let player;
 let complemetaryObjs;
-let screensCounter = 6;
+let screensCounter = 0;
 // notas en porcentajes de 20 para cada nivel
 let grades = [0, 0, 0, 0, 0]
 let gradesFive = [0, 0, 0, 0, 0]
@@ -136,43 +136,25 @@ function preload() {
 
 function setup() {
   createCanvas(700, 350);
+  tileMap = new Tilemap();
   //imageMode(CORNER);
-  player = new Player(20, 30, characterObject);
+  if(tileMap != undefined && characterObject != undefined){
+	  player = new Player(2, 1, characterObject, tileMap);
+  }
 
   smallBeer = { x: 200, y: 200, img: beerSmall };
   chicle = { x: 230, y: 220, img: chicleSmall };
-
-  complemetaryObjs = [
-    new Obj(55, 220, 110, 195, 125, 205, 65, 235),
-    new Obj(155, 120, 235, 75, 245, 80, 160, 125),
-    new Obj(270, 185, 470, 280, 465, 290, 255, 190),
-    new Obj(380, 135, 580, 225, 560, 235, 370, 140),
-    new Obj(470, 85, 675, 175, 665, 185, 465, 90)
-  ];
 
 }
 
 
 function draw() {
-  console.log(finalScoreScreensCounter)
   grades[4] = gradesFive[0] + gradesFive[1] + gradesFive[2] + gradesFive[3] + gradesFive[4];
 let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
   holdTime++;
 
   // Para que el usuario no inmediatamente clickee
   if (holdTime < 3 || holdTime > 60 * 2) {
-
-    // Checkea que el jugador no se salga
-    if (player.x < 0) { player.x += player.speed * 2 }
-    if (player.x > 640) { player.x -= player.speed * 2 }
-    if (player.y < 0) { player.y += player.speed * 2 }
-    if (player.y > 300) { player.y -= player.speed * 2 }
-
-    //!!!!! console.log importantes.
-
-    //console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
-    //console.log('x: ' + player.getX() + ' y: ' + player.getY());
-
 
     switch (screensCounter) {
       //Pantalla de inicio
@@ -187,22 +169,19 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
       case 2:
         image(background, 0, 0);
 
-        if ((player.getX() === 220 || player.getX() === 230) && player.getY() === 90 && phasesGameOne == 0) {
-          //console.log(player.getState());
+        if (player.currPos[0] === 8 && player.currPos[1] === 5
+	  || player.currPos[0] === 9 && player.currPos[1] === 6
+	  && phasesGameOne === 0) {
 
           player.setState(2);
           image(gameOneDialogues[0], 0, 0)
-        } else if (phasesGameOne == 0) {
+        } else if (phasesGameOne === 0) {
           image(locationIndicator, 0, 0);
         }
 
         if (phasesGameOne === 1) {
           image(gameOneDialogues[1], 0, 0)
         }
-
-        // console.log(phasesGameOne)
-
-
 
         image(managerObject[1], 260, 80)
 
@@ -221,7 +200,8 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
         }
         if (phasesGameTwo === 0) {
           image(locationIndicator2, 180, 220);
-          if ((player.getX() === 180) && player.getY() === 220) {
+        if (player.currPos[0] === 7 && player.currPos[1] === 14
+	  || player.currPos[0] === 7 && player.currPos[1] === 16) {
             playerLock = true;
             player.setState(0);
             image(nextButton, 560, 250);
@@ -289,7 +269,8 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
         }
         if (phasesGameFou === 0) {
           image(locationIndicator2, 250, 220);
-          if ((player.getX() === 250) && player.getY() === 220) {
+        if (player.currPos[0] === 9 && player.currPos[1] === 14
+	  || player.currPos[0] === 9 && player.currPos[1] === 16) {
             playerLock = true;
             player.setState(1);
             image(nextButton, 560, 250);
@@ -505,7 +486,6 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
           gradesFive[4] = 4;
         }
            
-        // console.log(mouseX)
         break;
       
       case 7:
@@ -570,7 +550,7 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
 
       //Opciones para pintar las cosas que se mueven despues de las dos primeras pantallas.
       if (screensCounter > 1) {
-        player.draw();
+        player.draw(tileMap);
 
 	playerHit = false;
 
@@ -591,7 +571,7 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
       if (screensCounter === 3 && phasesGameTwo === 1) {
         for (let j = 0; j < beerZones.length; j++) {
           image(pointer1, beerZones[j].x - 15, beerZones[j].y - 30);
-          if (player.isNear(beerZones[j], 65)) {
+          if (player.isNear(beerZones[j], 55)) {
             image(pointer2, beerZones[j].x - 30, beerZones[j].y - 55);
           }
         }
@@ -601,7 +581,7 @@ let finalScore = grades[0] + grades[1] + grades[2] + grades[3]+ grades[4];
       if (screensCounter === 5 && phasesGameFou === 1) {
         for (let j = 0; j < chicZones.length; j++) {
           image(pointer1, chicZones[j].x - 15, chicZones[j].y - 30);
-          if (player.isNear(chicZones[j], 65)) {
+          if (player.isNear(chicZones[j], 55)) {
             image(pointer2, chicZones[j].x - 30, chicZones[j].y - 55);
           }
         }
@@ -629,7 +609,6 @@ function mousePressed() {
     //Instrucciones
     case 1:
       if (mouseX > 279 && mouseX < 414 && mouseY > 298 && mouseY < 333) {
-        console.log("pasar")
         screensCounter = 2;
       }
       break;
@@ -642,7 +621,6 @@ function mousePressed() {
       }
       if (mouseX > 477 && mouseX < 525 && mouseY > 80 && mouseY < 127) {
         phasesGameOne = 1;
-        console.log(phasesGameOne)
       }
 
       //Rojo
@@ -854,7 +832,6 @@ function mousePressed() {
 
       if (dist(mouseX, mouseY, rangeTwoX, rangeTwoY) < 10) {
         rangeTwoOn = !rangeTwoOn;
-        console.log('undido')
       }
 
       if (mouseX > 488 && mouseX < 616 && mouseY > 160 && mouseY < 180) {
@@ -932,19 +909,19 @@ function keyPressed() {
   if (screensCounter > 1 && !playerLock) {
     switch (keyCode) {
       case 87:
-        player.move(0);
+        player.move(0, tileMap);
         break;
 
       case 83:
-        player.move(1);
+        player.move(1, tileMap);
         break;
 
       case 65:
-        player.move(2);
+        player.move(2, tileMap);
         break;
 
       case 68:
-        player.move(3);
+        player.move(3, tileMap);
         break;
     }
   }
